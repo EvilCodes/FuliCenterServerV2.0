@@ -1,0 +1,979 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "大家可以在此页面做服务端接口的测试啦",
+        "title": "福利社服务端接口"
+    },
+    "host": "192.168.10.7:8080/FuLiCenterServerV2.0",
+    "tags": [
+        {
+            "name": "fulishe",
+            "description": "所有接口",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "向本地服务端注册新用户-01",
+                "description": "将新用户信息及头像使用POST提交到服务器，完成新用户的注册。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "用户帐号，只能包含字母、数字、下划线",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_nick",
+                        "in": "query",
+                        "description": "昵称，可以包含汉字",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "所要上传的头像，可选",
+                        "required": false,
+                        "type": "file"
+                    }
+                ]
+            }
+        },
+        "/login":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "用户登录-02",
+                "description": "使用用户账号和密码登录服务端,服务器完成用户名和密码的校验逻辑",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/updateAvatar":{
+            "post": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "响应客户端上传/更新用户头像的请求-03",
+                "description": "客户端传入新图片，服务器接收新图片覆盖老图片同时将数据库更新",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name_or_hxid",
+                        "in": "query",
+                        "description": "用户的账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "avatarType",
+                        "in": "query",
+                        "description": "头像类型,默认为: user_avatar",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "user_avatar",
+                                "group_icon"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "所要上传的头像用于更新头像",
+                        "required": false,
+                        "type": "file"
+                    }
+                ]
+            }
+        },
+        "/downloadAvatar":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "响应客户端的下载头像的请求-04",
+                "description": "提供头像数据，供客户端下载",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name_or_hxid",
+                        "in": "query",
+                        "description": "用户的账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "avatarType",
+                        "in": "query",
+                        "description": "头像类型",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "user_avatar",
+                                "group_icon"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "m_avatar_suffix",
+                        "in": "query",
+                        "description": "头像后缀名",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                ".jpg",
+                                ".png"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "width",
+                        "in": "query",
+                        "description": "头像宽度",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "height",
+                        "in": "query",
+                        "description": "头像高度",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/findNewAndBoutiqueGoods": {
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "新品首页或精选二级页面一组商品信息-05",
+                "description": "新品首页或精选二级页面一组商品信息",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cat_id",
+                        "in": "query",
+                        "description": "0表示首页，>0表示二级分类",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "分页查询的页号，从1开始",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页查询的记录数量",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/findBoutiques": {
+            "get": {
+                "tags": [
+                    "fulishe"
+                ],
+                "summary": "提供精选首页数据-06",
+                "description": "提供精选首页页面数据供客户端下载并展示",
+                "author": " 2016年10月12日15:53:41"
+            }
+        },
+        "/findCategoryGroup":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载分类首页大类的数据-07",
+                "description": "响应客户端下载分类首页大类的请求",
+                "author": " 2016年10月12日15:53:41"
+            }
+        },
+        "/findCategoryChildren":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载分类首页中小类商品的数据-08",
+                "description": "响应客户端下载分类首页中小类商品的数据请求",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "大类id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findCategoryChildrenPages":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载分类首页中小类商品的数据-02-08",
+                "description": "响应客户端下载分类首页中小类商品的数据请求",
+                "author": " 2016年10月20日00:02:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "大类id",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "页号",
+                        "required": true,
+                        "type": "integer"
+                    },{
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页查询的记录数量",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/findGoodDetails":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载指定商品详细数据-09",
+                "description": "响应客户端下载指定商品信息的请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "goods_id",
+                        "in": "query",
+                        "description": "商品ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findGoodsDetails":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "响应客户端下载分类中二级页面一组商品信息的请求-10",
+                "description": "下载分类中二级页面一组商品详情的数据的请求",
+                "author": " 2016年10月12日15:53:41",
+                "parameters": [
+                    {
+                        "name": "cat_id",
+                        "in": "query",
+                        "description": "二级分类ID",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "页号",
+                        "required": true,
+                        "type": "integer"
+                    },{
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页查询的记录数量",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/addCollect":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "添加收藏-11",
+                "description": "响应客户端添加商品收藏的请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "goods_id",
+                        "in": "query",
+                        "description": "商品ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/isCollect":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "是否收藏指定商品-12",
+                "description": "响应客户端查询是否收藏指定商品的请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "goods_id",
+                        "in": "query",
+                        "description": "商品ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/deleteCollect":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "删除收藏-13",
+                "description": "响应客户端删除收藏的商品请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "goods_id",
+                        "in": "query",
+                        "description": "商品ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findCollects":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载用户的收藏商品-14",
+                "description": "响应客户端下载收藏的商品请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "页码",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页显示信息的条数",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/findCollectCount":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载收藏商品的数量-15",
+                "description": "个人设置页面，下载收藏商品的数量",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/downloadImage":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载图像的请求-16",
+                "description": "下载图像的请求，该请求由原版本5个接口整合而来",
+                "author": " 2016年10月12日15:53:41",
+                "parameters": [
+                    {
+                        "name": "imageurl",
+                        "in": "query",
+                        "description": "图片名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/addCart":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "响应客户端添加商品至购物车的请求-17",
+                "description": "响应客户端添加商品至购物车的请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "goods_id",
+                        "in": "query",
+                        "description": "商品ID",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "count",
+                        "in": "query",
+                        "description": "商品的件数",
+                        "required": true,
+                        "type": "integer"
+                    },{
+                        "name": "isChecked",
+                        "in": "query",
+                        "description": "商品是否被选中",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/findCarts":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "查询用户的购物车-18",
+                "description": "响应客户端下载用户的购物车中商品信息的请求。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "userName",
+                        "in": "query",
+                        "description": "用户名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/deleteCart":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "删除购物车中的商品-19",
+                "description": "响应客户端的删除购物车中指定商品信息。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "购物车ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/updateCart":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "修改购物车中的商品的选中件数-20",
+                "description": "响应客户端的修改购物车中指定商品信息。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "购物车ID",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "count",
+                        "in": "query",
+                        "description": "购物车中商品数量",
+                        "required": true,
+                        "type": "integer"
+                    },{
+                        "name": "isChecked",
+                        "in": "query",
+                        "description": "商品是否被选中",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/unregister":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "取消注册-21",
+                "description": "在客户端注册新用户时候，环信服务器注册失败需要将远端提交注册的新用户数据及图片删除",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "账号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+         "/updateNick":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "更新用户昵称-22",
+                "description": "客户端传来用户名和新昵称，服务端根据用户名更新昵称为新昵称的值",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_nick",
+                        "in": "query",
+                        "description": "用户新昵称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findCharge":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "查询支付情况请求-23",
+                "description": "查询支付情况的请求",
+                "author": " 2016年10月12日15:53:41"
+            }
+        },
+        "/pay":{
+            "post": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "支付请求-24",
+                "description": "客户端支付的请求",
+                "author": " 2016年10月12日15:53:41",
+                "parameters": [
+                    {
+                        "name": "payParams",
+                        "in": "query",
+                        "description": "读取客户端上传的post请求中的参数",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/updatePassword":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "更新用户密码-25",
+                "description": "客户端传来用户名和新密码，服务端根据用户名更新密码为新密码的值",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_password",
+                        "in": "query",
+                        "description": "用户新密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/downloadContactAllList":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "下载用户的好友列表的全部数据-26",
+                "description": "获取指定账号的好友列表全部数据",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_contact_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/downloadContactPageList": {
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "分页下载用户的好友列表的全部数据-27",
+                "description": "分页获取指定账号的好友列表全部数据",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_contact_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "页码",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页数据条数",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        },
+        "/addContact": {
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "添加好友-28",
+                "description": "根据两个用户的用户账号添加为好友关系，增加一条数据。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_contact_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_contact_cname",
+                        "in": "query",
+                        "description": "要添加的好友账号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/deleteContact": {
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "删除好友-29",
+                "description": "根据两个用户的用户账号删除好友关系，删除好友表中的两条数据。",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_contact_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_contact_cname",
+                        "in": "query",
+                        "description": "好友账号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findUserByUserName":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "根据用户名查找用户信息-30",
+                "description": "根据用户名查找用户信息，包括用户头像信息",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/findUsersForSearch":{
+            "get": {
+                "tags": [
+                   "fulishe"  
+                ],
+                "summary": "根据用户名或昵称模糊分页查找用户数据-31",
+                "description": "根据用户名或昵称，模糊分页查询用户数据信息",
+                "author": " 2016年10月12日15:53:41",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "m_user_name",
+                        "in": "query",
+                        "description": "用户账号",
+                        "type": "string"
+                    },
+                    {
+                        "name": "m_user_nick",
+                        "in": "query",
+                        "description": "用户新昵称",
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_id",
+                        "in": "query",
+                        "description": "页码",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页数据条数",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "petstore_auth": {
+            "type": "oauth2",
+            "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
+            "flow": "implicit",
+            "scopes": {
+                "write:pets": "modify pets in your account",
+                "read:pets": "read your pets"
+            }
+        },
+        "api_key": {
+            "type": "apiKey",
+            "name": "api_key",
+            "in": "header"
+        }
+    }
+}
